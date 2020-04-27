@@ -4,3 +4,6 @@ jdk:
 dist: trusty
 before_script: 
   - cd src
+addons: 
+  sonarcloud: 
+    organization: "GLescroel" 
