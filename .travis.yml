@@ -10,4 +10,4 @@ addons:
 
 script:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=GLescroel_myErp -Dsonar.login=1d59563522f070cbc907ccb02cd602994b390b25
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=GLescroel_myErp -Dsonar.login=ae2e527979c2c9445d5c80faa13b734aaa8e39f8
