@@ -2,8 +2,16 @@ language: java
 jdk:
   - oraclejdk8
 dist: trusty
-before_script: 
-  - cd src
+
+services:
+  - docker
+
+before_script:
+  - cd ./src
+  - cd ./docker/dev/
+  - docker-compose up -d
+  - cd ../../src
+
 addons:
   sonarcloud:
     organization: "glescroel"
@@ -13,3 +21,8 @@ addons:
 script:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
   - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=GLescroel_myErp -Dsonar.login=ae2e527979c2c9445d5c80faa13b734aaa8e39f8
+
+after_script:
+  - cd ../docker/dev
+  - docker-compose stop
+  - docker-compose rm -f
