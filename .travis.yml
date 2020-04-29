@@ -7,7 +7,6 @@ services:
   - docker
 
 before_script:
-  - cd ./src
   - cd ./docker/dev/
   - docker-compose up -d
   - cd ../../src
