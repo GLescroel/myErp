@@ -11,7 +11,7 @@ before_script:
 #  - cd ./docker/dev/
 #  - docker-compose up -d
 #  - cd ../../src
-  - psql -c 'create database myErp;' -U postgres
+  - psql -c 'create database myerp;' -U postgres
   - psql -c "create user myerp_user with password 'myerp';" -U postgres
   - psql -f "CREATE SCHEMA MYERP;" -U myerp_user
 #  - psql -U postgres -f ./00_create_db.sql
