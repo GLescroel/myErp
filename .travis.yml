@@ -18,10 +18,10 @@ before_script:
   - psql myerp -U myerp_user -f ./01_create_schema.sql
   - psql myerp -U myerp_user -f ./02_create_tables.sql
   - psql myerp -U myerp_user -f ./21_insert_data_demo.sql
-  - psql -c 'GRANT USAGE ON SCHEMA myerp TO myerp_user;' -U postgres
-  - psql -c 'GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA myerp to myerp_user;' -U postgres
-  - psql -c 'GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA myerp TO myerp_user;' -U postgres
-  - psql -c '\dn;' -U postgres#  
+#  - psql -c 'GRANT USAGE ON SCHEMA myerp TO myerp_user;' -U postgres
+#  - psql -c 'GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA myerp to myerp_user;' -U postgres
+#  - psql -c 'GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA myerp TO myerp_user;' -U postgres
+#  - psql -c '\dn;' -U postgres#  
   - cd ../../../../../src
 
 addons:
