@@ -2,14 +2,15 @@ version: '2'
 services:
   myerp.db:
     image: postgres:9.4
+    restart: always
     ports:
       - "127.0.0.1:9032:5432"
+    environment:
+      - POSTGRES_DB=myErp
+      - POSTGRES_USER=myErp
+      - POSTGRES_PASSWORD=myerp
     volumes:
 #      - "./data/db:/var/lib/postgresql/data
        - "./init/db/docker-entrypoint-initdb.d:/init/db/docker-entrypoint-initdb.d"
        - "./postgres-data:/var/lib/postgresql/data"
-#    environment:
-#      - POSTGRES_DB=myErp
-#      - POSTGRES_USER=myErp
-#      - POSTGRES_PASSWORD=myerp
       
