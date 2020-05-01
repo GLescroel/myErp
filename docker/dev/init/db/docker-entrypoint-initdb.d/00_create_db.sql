@@ -1,4 +1,4 @@
-CREATE ROLE myErp WITH
+CREATE ROLE myErp_user WITH
   LOGIN
   NOSUPERUSER
   INHERIT
@@ -9,7 +9,7 @@ CREATE ROLE myErp WITH
 
 CREATE DATABASE myErp
     WITH
-    OWNER = myErp
+    OWNER = myErp_user
     ENCODING = 'UTF8'
     TABLESPACE = pg_default
     CONNECTION LIMIT = -1;
