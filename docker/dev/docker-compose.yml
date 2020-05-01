@@ -4,10 +4,10 @@ services:
     image: postgres:9.4
     restart: always
     ports:
-      - "5432:5432"
+      - "127.0.0.1:9032:5432"
     environment:
       - POSTGRES_DB=myErp
-      - POSTGRES_USER=^postgres
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres123
     volumes:
 #      - "./data/db:/var/lib/postgresql/data
