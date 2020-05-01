@@ -14,7 +14,7 @@ before_script:
   - psql -c 'create database myerp;' -U postgres
   - psql -c "create user myerp_user with password 'myerp';" -U postgres
   - psql -c 'grant all privileges on database myerp to myerp_user;' -U postgres
-  - psql -c "CREATE SCHEMA MYERP;" -U myerp_user
+  - psql -c "CREATE SCHEMA MYERP;" -U postgres
 #  - psql -U postgres -f ./00_create_db.sql
   - psql myErp -U myerp_user -f ./01_create_schema.sql
   - cd ./docker/dev/init/db/docker-entrypoint-initdb.d/
