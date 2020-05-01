@@ -8,8 +8,8 @@ services:
 #      - "./data/db:/var/lib/postgresql/data
        - "./init/db/docker-entrypoint-initdb.d:/init/db/docker-entrypoint-initdb.d"
        - "./postgres-data:/var/lib/postgresql/data"
-    environment:
-      - POSTGRES_DB=myErp
-      - POSTGRES_USER=myErp
-      - POSTGRES_PASSWORD=myerp
+#    environment:
+#      - POSTGRES_DB=myErp
+#      - POSTGRES_USER=myErp
+#      - POSTGRES_PASSWORD=myerp
       
