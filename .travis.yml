@@ -12,7 +12,9 @@ before_script:
 #  - docker-compose up -d
 #  - cd ../../src
   - cd ./docker/dev/init/db/docker-entrypoint-initdb.d/
-  - psql -U postgres -f ./00_create_db.sql
+  - psql -c 'create database myErp;' -U postgres
+  - psql -c "create user myErp_iser with password 'myerp';" -U postgres
+#  - psql -U postgres -f ./00_create_db.sql
   - psql myErp -U myErp_user -f ./01_create_schema.sql
   - psql myErp -U myErp_user -f ./02_create_tables.sql
   - psql myErp -U myErp_user -f ./21_insert_data_demo.sql
