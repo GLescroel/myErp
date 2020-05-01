@@ -9,7 +9,7 @@ CREATE ROLE myErp WITH
 
 CREATE DATABASE myErp
     WITH
-    OWNER = myerp
+    OWNER = myErp
     ENCODING = 'UTF8'
     TABLESPACE = pg_default
     CONNECTION LIMIT = -1;
