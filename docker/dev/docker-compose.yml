@@ -7,8 +7,8 @@ services:
       - "127.0.0.1:9032:5432"
     environment:
       - POSTGRES_DB=myErp
-      - POSTGRES_USER=myErp
-      - POSTGRES_PASSWORD=myerp
+      - POSTGRES_USER=^postgres
+      - POSTGRES_PASSWORD=postgres123
     volumes:
 #      - "./data/db:/var/lib/postgresql/data
        - "./init/db/docker-entrypoint-initdb.d:/init/db/docker-entrypoint-initdb.d"
