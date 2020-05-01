@@ -11,7 +11,11 @@ services:
       - POSTGRES_PASSWORD=postgres123
     volumes:
 #      - "./data/db:/var/lib/postgresql/data
-       - "./init/db/docker-entrypoint-initdb.d:/init/db/docker-entrypoint-initdb.d"
+#       - "./init/db/docker-entrypoint-initdb.d:/init/db/docker-entrypoint-initdb.d"
+       - "./00_create_db.sql:/docker-entrypoint-initdb.d/00_crate_db.sql"
+       - "./01_create_schema.sql:/docker-entrypoint-initdb.d/01_create_schema.sql"
+       - "./02_create_tables.sql:/docker-entrypoint-initdb.d/02_create_tables.sql"
+       - "./21_insert_data_demo.sql:/docker-entrypoint-initdb.d/21_insert_data_demo.sql"
        - "./postgres-data:/var/lib/postgresql/data"
 volumes:
   postgres-data:      
