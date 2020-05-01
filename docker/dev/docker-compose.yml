@@ -4,7 +4,7 @@ services:
     image: postgres:9.4
     restart: always
     ports:
-      - "localhost:5432:5432"
+      - "5432:5432"
     environment:
       - POSTGRES_DB=myErp
       - POSTGRES_USER=^postgres
