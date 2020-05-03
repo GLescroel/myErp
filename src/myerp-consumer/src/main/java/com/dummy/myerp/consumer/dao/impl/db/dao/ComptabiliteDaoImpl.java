@@ -20,6 +20,8 @@ import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.technical.exception.NotFoundException;
 
+import javax.validation.Valid;
+
 
 /**
  * Implémentation de l'interface {@link ComptabiliteDao}
@@ -158,7 +160,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
         SQLinsertEcritureComptable = pSQLinsertEcritureComptable;
     }
     @Override
-    public void insertEcritureComptable(EcritureComptable pEcritureComptable) {
+    public void insertEcritureComptable(@Valid EcritureComptable pEcritureComptable) {
         // ===== Ecriture Comptable
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
         MapSqlParameterSource vSqlParams = new MapSqlParameterSource();

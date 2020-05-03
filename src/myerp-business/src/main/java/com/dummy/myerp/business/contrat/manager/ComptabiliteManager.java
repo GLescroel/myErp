@@ -7,6 +7,8 @@ import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
 
+import javax.validation.Valid;
+
 
 /**
  * Interface du manager du package comptabilite.
@@ -66,7 +68,7 @@ public interface ComptabiliteManager {
      * @param pEcritureComptable -
      * @throws FunctionalException Si l'Ecriture comptable ne respecte pas les règles de gestion
      */
-    void insertEcritureComptable(EcritureComptable pEcritureComptable) throws FunctionalException;
+    void insertEcritureComptable(@Valid EcritureComptable pEcritureComptable) throws FunctionalException;
 
     /**
      * Met à jour l'écriture comptable.

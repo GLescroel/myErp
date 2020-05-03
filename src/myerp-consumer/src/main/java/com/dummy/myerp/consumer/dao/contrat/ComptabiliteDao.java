@@ -7,6 +7,8 @@ import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.technical.exception.NotFoundException;
 
+import javax.validation.Valid;
+
 
 /**
  * Interface de DAO des objets du package Comptabilite
@@ -65,7 +67,7 @@ public interface ComptabiliteDao {
      *
      * @param pEcritureComptable -
      */
-    void insertEcritureComptable(EcritureComptable pEcritureComptable);
+    void insertEcritureComptable(@Valid EcritureComptable pEcritureComptable);
 
     /**
      * Met à jour l'écriture comptable.
