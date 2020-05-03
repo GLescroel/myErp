@@ -1,26 +1,17 @@
 package com.dummy.myerp.consumer.db.helper;
 
+import org.apache.commons.lang3.time.DateUtils;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.apache.commons.lang3.time.DateUtils;
-
 
 /**
  * Classe utilitaire travaillant sur les ResultSet
  */
-public abstract class ResultSetHelper {
-
-    // ==================== Constructeurs ====================
-    /**
-     * Constructeur.
-     */
-    protected ResultSetHelper() {
-        super();
-    }
-
+public interface ResultSetHelper {
 
     // ==================== Méthodes ====================
     /**
@@ -36,7 +27,7 @@ public abstract class ResultSetHelper {
         Integer vRetour = null;
         int vInt = pRS.getInt(pColName);
         if (!pRS.wasNull()) {
-            vRetour = new Integer(vInt);
+            vRetour = vInt;
         }
         return vRetour;
     }
@@ -54,7 +45,7 @@ public abstract class ResultSetHelper {
         Long vRetour = null;
         Long vLong = pRS.getLong(pColName);
         if (!pRS.wasNull()) {
-            vRetour = new Long(vLong);
+            vRetour = vLong;
         }
         return vRetour;
     }
