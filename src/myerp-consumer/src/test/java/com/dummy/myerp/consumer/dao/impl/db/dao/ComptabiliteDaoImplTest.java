@@ -201,4 +201,23 @@ public class ComptabiliteDaoImplTest {
         }
         Assert.assertFalse(ligneFound);
     }
+
+    @Test
+    public void testGetSequenceComptable() throws NotFoundException {
+        Assert.assertEquals(java.util.Optional.of(40).get(), comptabiliteDao.getSequenceEcritureComptable("AC", 2016).getDerniereValeur());
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void testGetSequenceComptableNotFound() throws NotFoundException {
+        comptabiliteDao.getSequenceEcritureComptable("AC", 2040);
+    }
+
+    @Test
+    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
+    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
+    public void testSetSequenceComptable() throws NotFoundException {
+        comptabiliteDao.setSequenceEcritureComptable("AC", 2016, 99);
+        Assert.assertEquals(java.util.Optional.of(99).get(), comptabiliteDao.getSequenceEcritureComptable("AC", 2016).getDerniereValeur());
+    }
+
 }

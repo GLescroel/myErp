@@ -6,6 +6,7 @@ import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
+import com.dummy.myerp.model.bean.comptabilite.SequenceEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
 import com.dummy.myerp.technical.exception.NotFoundException;
 import org.apache.commons.lang3.ObjectUtils;
@@ -59,10 +60,8 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
     /**
      * {@inheritDoc}
      */
-    // TODO à tester
     @Override
-    public synchronized void addReference(EcritureComptable pEcritureComptable) {
-        // TODO à implémenter
+    public synchronized void addReference(EcritureComptable pEcritureComptable) throws NotFoundException {
         // Bien se réferer à la JavaDoc de cette méthode !
         /* Le principe :
                 1.  Remonter depuis la persitance la dernière valeur de la séquence du journal pour l'année de l'écriture
@@ -75,6 +74,20 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                 4.  Enregistrer (insert/update) la valeur de la séquence en persitance
                     (table sequence_ecriture_comptable)
          */
+        String codeJournal = pEcritureComptable.getJournal().getCode();
+        Integer annee = Integer.valueOf(pEcritureComptable.getDate().toInstant().toString().substring(0, 4));
+        SequenceEcritureComptable sequenceEcritureComptable = getDaoProxy().getComptabiliteDao().getSequenceEcritureComptable(
+                codeJournal, annee);
+
+        String referenceToAdd = String.format("%s-%d/%05d",
+                codeJournal,
+                annee,
+                sequenceEcritureComptable.getDerniereValeur()+1);
+
+        pEcritureComptable.setReference(referenceToAdd);
+
+        getDaoProxy().getComptabiliteDao().setSequenceEcritureComptable(
+                codeJournal, annee, sequenceEcritureComptable.getDerniereValeur()+1);
     }
 
     /**

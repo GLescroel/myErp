@@ -14,6 +14,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -194,6 +195,22 @@ public class ComptabiliteManagerImplTest {
         testInsertEcritureComptable();
         vEcritureComptable.setId(999);
         manager.checkEcritureComptableContext(vEcritureComptable);
+    }
+
+    @Test
+    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
+    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
+    public void testAddReference() throws Exception {
+        vEcritureComptable.setReference(null);
+        vEcritureComptable.setDate(Date.from(Instant.parse("2016-12-31T18:35:24.00Z")));
+        manager.addReference(vEcritureComptable);
+        manager.checkEcritureComptable(vEcritureComptable);
+        Assert.assertEquals("AC-2016/00041", vEcritureComptable.getReference());
+        manager.insertEcritureComptable(vEcritureComptable);
+        Assert.assertNotNull(getEcritureComptableByRef("AC-2016/00041"));
+
+        manager.addReference(vEcritureComptable);
+        Assert.assertEquals("AC-2016/00042", vEcritureComptable.getReference());
     }
 
 }
