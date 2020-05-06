@@ -34,6 +34,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
      * Instantiates a new Comptabilite manager.
      */
     public ComptabiliteManagerImpl() {
+        //Constructeur
     }
 
 
@@ -150,7 +151,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
             throw new FunctionalException(
                     "La référence de l'écriture comptable ne commence pas par le code du journal comptable.");
         }
-        String anneeReference = pEcritureComptable.getReference().substring(pEcritureComptable.getReference().indexOf("-") + 1, pEcritureComptable.getReference().indexOf("/"));
+        String anneeReference = pEcritureComptable.getReference().substring(pEcritureComptable.getReference().indexOf('-') + 1, pEcritureComptable.getReference().indexOf('/'));
         String anneComptable = pEcritureComptable.getDate().toInstant().toString().substring(0, 4);
         if (!anneeReference.equalsIgnoreCase(anneComptable)) {
             throw new FunctionalException(
