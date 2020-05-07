@@ -27,6 +27,8 @@ public class CompteComptable {
      * Instantiates a new Compte comptable.
      */
     public CompteComptable() {
+        numero = 0;
+        libelle = "";
     }
 
     /**
@@ -36,6 +38,7 @@ public class CompteComptable {
      */
     public CompteComptable(Integer pNumero) {
         numero = pNumero;
+        libelle = "";
     }
 
     /**

@@ -28,6 +28,8 @@ public class JournalComptable {
      * Instantiates a new Journal comptable.
      */
     public JournalComptable() {
+        code = "";
+        libelle = "";
     }
 
     /**

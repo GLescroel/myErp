@@ -35,6 +35,7 @@ public class LigneEcritureComptable {
      * Instantiates a new Ligne ecriture comptable.
      */
     public LigneEcritureComptable() {
+        compteComptable = new CompteComptable(0, "");
     }
 
     /**
