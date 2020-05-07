@@ -3,10 +3,20 @@ package com.dummy.myerp.model.bean.comptabilite;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class SequenceEcritureComptableTest {
 
+    @Test
+    public void testGettersAndSetters() {
+        SequenceEcritureComptable sequenceEcritureComptable = new SequenceEcritureComptable();
+        sequenceEcritureComptable.setJournalCode("TU");
+        sequenceEcritureComptable.setAnnee(2020);
+        sequenceEcritureComptable.setDerniereValeur(99);
+
+        Assert.assertEquals("TU", sequenceEcritureComptable.getJournalCode());
+        Assert.assertEquals(java.util.Optional.of(2020).get(), sequenceEcritureComptable.getAnnee());
+        Assert.assertEquals(java.util.Optional.of(99).get(), sequenceEcritureComptable.getDerniereValeur());
+
+    }
     @Test
     public void testSequenceEcritureComptable() {
 
