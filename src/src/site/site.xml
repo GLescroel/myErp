@@ -9,15 +9,22 @@
   </skin>
 
   <bannerLeft>
-    <name>${project.name}</name>
+    <!--<name>${project.name}</name>
     <src>img/logo-app.png</src>
-    <href>${project.url}</href>
+    <href>${project.url}</href> -->
+    <name>MyErp</name>
+    <src>img/logo-app.png</src>
+    <href>http://www.dummy.com/projects/myerp</href>
   </bannerLeft>
 
   <bannerRight>
-    <name>${project.organization.name}</name>
+<!--    <name>${project.organization.name}</name>
     <src>img/logo-client.png</src>
-    <href>${project.organization.url}</href>
+    <href>${project.organization.url}</href>  -->
+    <name>Dummy</name>
+    <src>img/logo-client.png</src>
+    <href>http://www.dummy.com</href>
+
   </bannerRight>
 
 

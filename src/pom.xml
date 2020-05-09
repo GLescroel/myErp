@@ -461,14 +461,6 @@
                     <linkXRef>false</linkXRef>
                 </configuration>
                 <reportSets>
-                    <!-- reportSet par défaut, exécuté dans tous les modules (non-aggregate reports) -->
-                    <reportSet>
-                        <reports>
-                            <!-- goal "report-only" afin de ne pas relancer les tests unitaires
-                                 car normalement ils ont été lancés par la phase compile -->
-                            <report>report-only</report>
-                        </reports>
-                    </reportSet>
                     <reportSet>
                         <!-- reportSet d'agrégation des rapports des sous-modules -->
                         <id>aggregate</id>
@@ -481,6 +473,19 @@
                         </reports>
                         <configuration>
                             <aggregate>true</aggregate>
+                        </configuration>
+                    </reportSet>
+                    <!-- reportSet par défaut, exécuté dans tous les modules (non-aggregate reports) -->
+                    <reportSet>
+                        <id>modules</id>
+                        <inherited>true</inherited>
+                        <reports>
+                            <!-- goal "report-only" afin de ne pas relancer les tests unitaires
+                                 car normalement ils ont été lancés par la phase compile -->
+                            <report>report-only</report>
+                        </reports>
+                        <configuration>
+                            <aggregate>false</aggregate>
                         </configuration>
                     </reportSet>
                 </reportSets>
