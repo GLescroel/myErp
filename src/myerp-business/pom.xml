@@ -177,7 +177,6 @@
                         </goals>
                         <configuration>
                             <rules>
-                                <!--
                                 <rule>
                                     <limits>
                                         <limit>
@@ -185,7 +184,6 @@
                                         </limit>
                                     </limits>
                                 </rule>
-                                -->
                             </rules>
                         </configuration>
                     </execution>
