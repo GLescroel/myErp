@@ -65,8 +65,8 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
     public synchronized void addReference(EcritureComptable pEcritureComptable) throws NotFoundException {
         // Bien se réferer à la JavaDoc de cette méthode !
         /* Le principe :
-                1.  Remonter depuis la persitance la dernière valeur de la séquence du journal pour l'année de l'écriture
-                    (table sequence_ecriture_comptable)
+                1.  Remonter depuis la persitance la dernière valeur de la séquence du journal pour l'année
+                de l'écriture (table sequence_ecriture_comptable)
                 2.  * S'il n'y a aucun enregistrement pour le journal pour l'année concernée :
                         1. Utiliser le numéro 1.
                     * Sinon :
@@ -75,20 +75,20 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                 4.  Enregistrer (insert/update) la valeur de la séquence en persitance
                     (table sequence_ecriture_comptable)
          */
-        String codeJournal = pEcritureComptable.getJournal().getCode();
-        Integer annee = Integer.valueOf(pEcritureComptable.getDate().toInstant().toString().substring(0, 4));
-        SequenceEcritureComptable sequenceEcritureComptable = getDaoProxy().getComptabiliteDao().getSequenceEcritureComptable(
-                codeJournal, annee);
+        String vCodeJournal = pEcritureComptable.getJournal().getCode();
+        Integer vAnnee = Integer.valueOf(pEcritureComptable.getDate().toInstant().toString().substring(0, 4));
+        SequenceEcritureComptable vSequenceEcritureComptable =
+                getDaoProxy().getComptabiliteDao().getSequenceEcritureComptable(vCodeJournal, vAnnee);
 
-        String referenceToAdd = String.format("%s-%d/%05d",
-                codeJournal,
-                annee,
-                sequenceEcritureComptable.getDerniereValeur()+1);
+        String vReferenceToAdd = String.format("%s-%d/%05d",
+                vCodeJournal,
+                vAnnee,
+                vSequenceEcritureComptable.getDerniereValeur() + 1);
 
-        pEcritureComptable.setReference(referenceToAdd);
+        pEcritureComptable.setReference(vReferenceToAdd);
 
         getDaoProxy().getComptabiliteDao().setSequenceEcritureComptable(
-                codeJournal, annee, sequenceEcritureComptable.getDerniereValeur()+1);
+                vCodeJournal, vAnnee, vSequenceEcritureComptable.getDerniereValeur() + 1);
     }
 
     /**
@@ -119,10 +119,61 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         }
 
         // ===== RG_Compta_2 : Pour qu'une écriture comptable soit valide, elle doit être équilibrée
-        if (!pEcritureComptable.isEquilibree()) {
-            throw new FunctionalException("L'écriture comptable n'est pas équilibrée.");
+        if (!checkRG2(pEcritureComptable)) {
+            throw new FunctionalException("RG2 non respectée : L'écriture comptable n'est pas équilibrée.");
         }
 
+        // ===== RG_Compta_3 : une écriture comptable doit avoir au moins 2 lignes d'écriture (1 au débit, 1 au crédit)
+        if (!checkRG3(pEcritureComptable)) {
+            throw new FunctionalException(
+                    "RG3 non respectée : L'écriture comptable doit avoir au moins deux lignes : " +
+                            "une ligne au débit et une ligne au crédit.");
+        }
+
+        // ===== RG_Compta_5 : Format et contenu de la référence
+        // vérifier que l'année dans la référence correspond bien à la date de l'écriture, idem pour le code journal...
+        if (!checkCodeJournalRG5(pEcritureComptable)) {
+            throw new FunctionalException(
+                    "RG5 non respectée : La référence de l'écriture comptable ne commence pas " +
+                            "par le code du journal comptable.");
+        }
+        if (!checkDateRG5(pEcritureComptable)) {
+            throw new FunctionalException(
+                    "RG5 non respectée : La référence de l'écriture comptable ne contient pas l'année d'écriture.");
+        }
+    }
+
+    /**
+     * Vérifie que la date dans la référence de l'Ecriture comptable respecte bien RG5
+     *
+     * @param pEcritureComptable -
+     * @return boolean
+     */
+    private boolean checkDateRG5(EcritureComptable pEcritureComptable) {
+        String vAnneeReference = pEcritureComptable.getReference()
+                .substring(pEcritureComptable.getReference().indexOf('-') + 1,
+                        pEcritureComptable.getReference().indexOf('/'));
+        String vAnneComptable = pEcritureComptable.getDate().toInstant().toString().substring(0, 4);
+        return vAnneeReference.equalsIgnoreCase(vAnneComptable);
+    }
+
+    /**
+     * Vérifie que le code journal dans la référence de l'Ecriture comptable respecte bien RG5
+     *
+     * @param pEcritureComptable -
+     * @return boolean
+     */
+    private boolean checkCodeJournalRG5(EcritureComptable pEcritureComptable) {
+        return pEcritureComptable.getReference().startsWith(pEcritureComptable.getJournal().getCode() + "-");
+    }
+
+    /**
+     * Vérifie que l'Ecriture comptable respecte bien RG3
+     *
+     * @param pEcritureComptable -
+     * @return boolean
+     */
+    private boolean checkRG3(EcritureComptable pEcritureComptable) {
         // ===== RG_Compta_3 : une écriture comptable doit avoir au moins 2 lignes d'écriture (1 au débit, 1 au crédit)
         int vNbrCredit = 0;
         int vNbrDebit = 0;
@@ -136,27 +187,21 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                 vNbrDebit++;
             }
         }
-        // On test le nombre de lignes car si l'écriture à une seule ligne
+        // On teste le nombre de lignes car si l'écriture à une seule ligne
         //      avec un montant au débit et un montant au crédit ce n'est pas valable
-        if (pEcritureComptable.getListLigneEcriture().size() < 2
+        return !(pEcritureComptable.getListLigneEcriture().size() < 2
                 || vNbrCredit < 1
-                || vNbrDebit < 1) {
-            throw new FunctionalException(
-                    "L'écriture comptable doit avoir au moins deux lignes : une ligne au débit et une ligne au crédit.");
-        }
+                || vNbrDebit < 1);
+    }
 
-        // ===== RG_Compta_5 : Format et contenu de la référence
-        // vérifier que l'année dans la référence correspond bien à la date de l'écriture, idem pour le code journal...
-        if (!pEcritureComptable.getReference().startsWith(pEcritureComptable.getJournal().getCode() + "-")) {
-            throw new FunctionalException(
-                    "La référence de l'écriture comptable ne commence pas par le code du journal comptable.");
-        }
-        String anneeReference = pEcritureComptable.getReference().substring(pEcritureComptable.getReference().indexOf('-') + 1, pEcritureComptable.getReference().indexOf('/'));
-        String anneComptable = pEcritureComptable.getDate().toInstant().toString().substring(0, 4);
-        if (!anneeReference.equalsIgnoreCase(anneComptable)) {
-            throw new FunctionalException(
-                    "La référence de l'écriture comptable ne contient pas l'année d'écriture.");
-        }
+    /**
+     * Vérifie que l'Ecriture comptable est équilibrée et respecte donc RG2
+     *
+     * @param pEcritureComptable -
+     * @return boolean
+     */
+    private boolean checkRG2(EcritureComptable pEcritureComptable) {
+        return pEcritureComptable.isEquilibree();
     }
 
 

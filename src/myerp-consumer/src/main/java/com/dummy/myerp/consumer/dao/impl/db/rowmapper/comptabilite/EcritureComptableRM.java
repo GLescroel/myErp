@@ -1,12 +1,12 @@
 package com.dummy.myerp.consumer.dao.impl.db.rowmapper.comptabilite;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import org.springframework.jdbc.core.RowMapper;
 import com.dummy.myerp.consumer.ConsumerHelper;
 import com.dummy.myerp.consumer.dao.impl.cache.JournalComptableDaoCache;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
+import org.springframework.jdbc.core.RowMapper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 
 /**
@@ -17,6 +17,12 @@ public class EcritureComptableRM implements RowMapper<EcritureComptable> {
     /** JournalComptableDaoCache */
     private final JournalComptableDaoCache journalComptableDaoCache = new JournalComptableDaoCache();
 
+    /**
+     * Constructeur public
+     */
+    public EcritureComptableRM() {
+        //constructeur public
+    }
 
     @Override
     public EcritureComptable mapRow(ResultSet pRS, int pRowNum) throws SQLException {

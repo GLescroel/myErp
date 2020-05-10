@@ -39,6 +39,13 @@ public class EcritureComptable {
     @Size(min = 2)
     private final List<LigneEcritureComptable> listLigneEcriture = new ArrayList<>();
 
+    /** Constructeur par défaut */
+    public EcritureComptable() {
+        //constructeur par défaut
+        this.journal = new JournalComptable("", "");
+        this.date = new Date();
+        this.libelle = "";
+    }
 
     // ==================== Getters/Setters ====================
     public Integer getId() {

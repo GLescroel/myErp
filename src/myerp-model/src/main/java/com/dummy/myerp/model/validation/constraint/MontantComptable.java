@@ -30,13 +30,19 @@ import javax.validation.constraints.Digits;
 @Documented
 public @interface MontantComptable {
 
-    /** Message de la violation */
+    /** Message de la violation
+     * @return String
+     */
     String message() default "Taux de TVA invalide";
 
-    /** Groupe de validation */
+    /** Groupe de validation
+     * @return Class[]
+     */
     Class<?>[] groups() default {};
 
-    /** Payload */
+    /** Payload
+     * @return Class[]
+     */
     Class<? extends Payload>[] payload() default {};
 
     /**
@@ -46,7 +52,9 @@ public @interface MontantComptable {
     @Retention(RetentionPolicy.RUNTIME)
     @Documented
     @interface List {
-        /** List des {@link MontantComptable} */
+        /** List des {@link MontantComptable}
+         * @return MontantComptable[]
+         */
         MontantComptable[] value();
     }
 }

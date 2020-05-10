@@ -86,17 +86,19 @@ public interface ComptabiliteDao {
 
     /**
      * Renvoie la séquence d'écriture comptable correspondante au code journal et l'année
-     * @param codeJournal
-     * @param annee
+     * @param pCodeJournal -
+     * @param pAnnee -
      * @return {@link SequenceEcritureComptable}
+     * @throws NotFoundException si la séquence n'est pas trouvée
      */
-    SequenceEcritureComptable getSequenceEcritureComptable(String codeJournal, Integer annee) throws NotFoundException;
+    SequenceEcritureComptable getSequenceEcritureComptable(String pCodeJournal, Integer pAnnee)
+            throws NotFoundException;
 
     /**
      * Enregistre la dernière séquence d'écriture comptable correspondante au code journal et l'année
-     * @param codeJournal
-     * @param annee
-     * @param derniereValeur
+     * @param pCodeJournal -
+     * @param pAnnee -
+     * @param pDerniereValeur -
      */
-    void setSequenceEcritureComptable(String codeJournal, Integer annee, int derniereValeur);
+    void setSequenceEcritureComptable(String pCodeJournal, Integer pAnnee, int pDerniereValeur);
 }

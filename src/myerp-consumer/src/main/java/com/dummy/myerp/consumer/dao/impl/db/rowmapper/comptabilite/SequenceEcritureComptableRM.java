@@ -6,7 +6,17 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * {@link RowMapper} de {@link SequenceEcritureComptable}
+ */
 public class SequenceEcritureComptableRM implements RowMapper<SequenceEcritureComptable> {
+
+    /**
+     * Constructeur public
+     */
+    public SequenceEcritureComptableRM() {
+        //constructeur public
+    }
 
     @Override
     public SequenceEcritureComptable mapRow(ResultSet pRS, int pRowNum) throws SQLException {

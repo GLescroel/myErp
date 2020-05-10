@@ -29,12 +29,19 @@ import java.util.List;
  */
 public class ComptabiliteDaoImpl extends AbstractDbConsumer implements ComptabiliteDao {
 
+    /** Colonne reference */
     private static final String REFERENCE = "reference";
+    /** Colonne journal_code */
     private static final String JOURNAL_CODE = "journal_code";
+    /** Colonne date */
     private static final String DATE = "date";
+    /** Colonne libelle */
     private static final String LIBELLE = "libelle";
+    /** Colonne ecriture_id */
     private static final String ECRITURE_ID = "ecriture_id";
+    /** Colonne annee */
     private static final String ANNEE = "annee";
+    /** Colonne derniere_valeur */
     private static final String DERNIERE_VALEUR = "derniere_valeur";
 
     // ==================== Constructeurs ====================
@@ -266,17 +273,19 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
         sqlGetSequenceEcritureComptable = pSQLgetSequenceEcritureComptable;
     }
     @Override
-    public SequenceEcritureComptable getSequenceEcritureComptable(String codeJournal, Integer annee) throws NotFoundException {
+    public SequenceEcritureComptable getSequenceEcritureComptable(String pCodeJournal, Integer pAnnee)
+            throws NotFoundException {
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
         MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
-        vSqlParams.addValue(JOURNAL_CODE, codeJournal);
-        vSqlParams.addValue(ANNEE, annee);
+        vSqlParams.addValue(JOURNAL_CODE, pCodeJournal);
+        vSqlParams.addValue(ANNEE, pAnnee);
         SequenceEcritureComptableRM vRM = new SequenceEcritureComptableRM();
         SequenceEcritureComptable vBean;
         try {
             vBean = vJdbcTemplate.queryForObject(sqlGetSequenceEcritureComptable, vSqlParams, vRM);
         } catch (EmptyResultDataAccessException vEx) {
-            throw new NotFoundException("SequenceEcritureComptable non trouvée pour journal_code=" + codeJournal + " et année=" + annee);
+            throw new NotFoundException("SequenceEcritureComptable non trouvée pour journal_code=" + pCodeJournal +
+                    " et année=" + pAnnee);
         }
         return vBean;
     }
@@ -287,18 +296,19 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
         sqlSetSequenceEcritureComptable = pSQLSetSequenceEcritureComptable;
     }
     /**
-     * Enregistre le dernière séquence d'écriture comptable pour le journal {@code codeJournal} pour l'année {@code annee}
-     * @param codeJournal
-     * @param annee
-     * @param derniereValeur
+     * Enregistre le dernière séquence d'écriture comptable
+     * pour le journal {@code pCodeJournal} pour l'année {@code pAnnee}
+     * @param pCodeJournal -
+     * @param pAnnee -
+     * @param pDerniereValeur -
      */
     @Override
-    public void setSequenceEcritureComptable(String codeJournal, Integer annee, int derniereValeur) {
+    public void setSequenceEcritureComptable(String pCodeJournal, Integer pAnnee, int pDerniereValeur) {
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
         MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
-        vSqlParams.addValue(ANNEE, annee);
-        vSqlParams.addValue(JOURNAL_CODE, codeJournal);
-        vSqlParams.addValue(DERNIERE_VALEUR, derniereValeur);
+        vSqlParams.addValue(ANNEE, pAnnee);
+        vSqlParams.addValue(JOURNAL_CODE, pCodeJournal);
+        vSqlParams.addValue(DERNIERE_VALEUR, pDerniereValeur);
 
         vJdbcTemplate.update(sqlSetSequenceEcritureComptable, vSqlParams);
     }

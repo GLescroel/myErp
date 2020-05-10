@@ -8,7 +8,11 @@ import com.dummy.myerp.consumer.dao.contrat.DaoProxy;
  */
 public abstract class ConsumerHelper {
 
-    private ConsumerHelper(){}
+    // ==================== Constructeur ====================
+    /**
+     * Constructeur privé
+     */
+    private ConsumerHelper() { }
 
     /** Le DaoProxy à utiliser pour accéder aux autres classes de DAO */
     private static DaoProxy daoProxy;
