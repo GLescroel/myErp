@@ -83,7 +83,8 @@ public class ComptabiliteManagerImplTest {
         EcritureComptable ecritureComptable = getEcritureComptableByRef(ECRITURE_TEST_REF);
         ecritureComptable.setReference(ECRITURE_TEST_REF_NEW);
         ecritureComptable.setLibelle(ECRITURE_TEST_LIBELLE_NEW);
-        ecritureComptable.setJournal(new JournalComptable("BQ", "Banque"));
+        ecritureComptable.setDate(Date.from(Instant.parse("2020-11-30T18:35:24.00Z")));
+        ecritureComptable.setJournal(new JournalComptable("AC", "Achat"));
 
         List<LigneEcritureComptable> lignes = ecritureComptable.getListLigneEcriture();
         List<LigneEcritureComptable> updatedLignes = new ArrayList<>();
