@@ -42,7 +42,7 @@
     </menu>
 
     <menu name="Documentations">
-    	<item name="Document Exemple 1" href="doc/fichierDocExemple.txt"/>
+    	<item name="Modèle de la base de données" href="doc/DC_Comptabilite.png"/>
     </menu>
 
 
