@@ -6,7 +6,7 @@ services:
     ports:
       - "127.0.0.1:9032:5432"
     environment:
-      - POSTGRES_DB=Myerp
+      - POSTGRES_DB=myerp
       - POSTGRES_USER=myerp_user
       - POSTGRES_PASSWORD=myerp
     volumes:
