@@ -10,11 +10,11 @@ services:
       - POSTGRES_USER=myerp_user
       - POSTGRES_PASSWORD=myerp
     volumes:
-#       - "./00_create_db.sql:./init/db/docker-entrypoint-initdb.d/00_crate_db.sql"
-#       - "./01_create_schema.sql:./init/db/docker-entrypoint-initdb.d/01_create_schema.sql"
-#       - "./02_create_tables.sql:./init/db/docker-entrypoint-initdb.d/02_create_tables.sql"
-#       - "./21_insert_data_demo.sql:./init/db/docker-entrypoint-initdb.d/21_insert_data_demo.sql"
-       - "./init/db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
+       - "./00_create_db.sql:./init/db/docker-entrypoint-initdb.d/00_create_db.sql"
+       - "./01_create_schema.sql:./init/db/docker-entrypoint-initdb.d/01_create_schema.sql"
+       - "./02_create_tables.sql:./init/db/docker-entrypoint-initdb.d/02_create_tables.sql"
+       - "./21_insert_data_demo.sql:./init/db/docker-entrypoint-initdb.d/21_insert_data_demo.sql"
+#       - "./init/db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
 #      - "./data/db:/var/lib/postgresql/data
 #       - "./init/db/docker-entrypoint-initdb.d:/init/db/docker-entrypoint-initdb.d"
 
