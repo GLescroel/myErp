@@ -33,7 +33,7 @@
         <site>
             <id>site</id>
             <name>site-doc</name>
-            <url>file://${project.build.directory}/site-doc/</url>
+            <url>file://${project.build.directory}/site/</url>
         </site>
     </distributionManagement>
 

@@ -19,6 +19,10 @@
     <!-- ===== General information ===== -->
     <name>${project.artifactId}</name>
 
+    <description>
+        Présentation du module myerp-consumer
+    </description>
+
 
     <!-- =============================================================== -->
     <!-- Distrubution management -->
@@ -27,7 +31,7 @@
         <site>
             <id>site</id>
             <name>site-doc</name>
-            <url>file://${basedir}/../target/site-doc/${project.artifactId}/</url>
+            <url>file://${project.build.directory}/site/</url>
         </site>
     </distributionManagement>
 
