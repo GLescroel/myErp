@@ -10,6 +10,7 @@ services:
 before_script:
   - cd ./docker/dev/
   - docker-compose up -d
+  - docker-compose ps -a
 #  - cd ../../src
 #  - psql -c 'create database myerp;' -U postgres
 #  - psql -c "create user myerp_user with password 'myerp';" -U postgres
