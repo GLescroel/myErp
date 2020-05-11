@@ -1,4 +1,4 @@
-CREATE ROLE myErp_user WITH
+CREATE ROLE myerp_user WITH
   LOGIN
   NOSUPERUSER
   INHERIT
@@ -7,7 +7,7 @@ CREATE ROLE myErp_user WITH
   NOREPLICATION
   PASSWORD 'myerp';
 
-CREATE DATABASE myErp
+CREATE DATABASE myerp
     WITH
     OWNER = myErp_user
     ENCODING = 'UTF8'
