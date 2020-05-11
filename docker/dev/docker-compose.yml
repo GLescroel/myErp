@@ -6,16 +6,19 @@ services:
     ports:
       - "127.0.0.1:9032:5432"
     environment:
-      - POSTGRES_DB=myErp
-      - POSTGRES_USER=myErp
+      - POSTGRES_DB=myerp
+      - POSTGRES_USER=myerp_user
       - POSTGRES_PASSWORD=myerp
     volumes:
+    
+       - "./init/db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
 #      - "./data/db:/var/lib/postgresql/data
 #       - "./init/db/docker-entrypoint-initdb.d:/init/db/docker-entrypoint-initdb.d"
-       - "./00_create_db.sql:/docker-entrypoint-initdb.d/00_crate_db.sql"
-       - "./01_create_schema.sql:/docker-entrypoint-initdb.d/01_create_schema.sql"
-       - "./02_create_tables.sql:/docker-entrypoint-initdb.d/02_create_tables.sql"
-       - "./21_insert_data_demo.sql:/docker-entrypoint-initdb.d/21_insert_data_demo.sql"
+
+#       - "./00_create_db.sql:/docker-entrypoint-initdb.d/00_crate_db.sql"
+#       - "./01_create_schema.sql:/docker-entrypoint-initdb.d/01_create_schema.sql"
+#       - "./02_create_tables.sql:/docker-entrypoint-initdb.d/02_create_tables.sql"
+#       - "./21_insert_data_demo.sql:/docker-entrypoint-initdb.d/21_insert_data_demo.sql"
        - "./postgres-data:/var/lib/postgresql/data"
 volumes:
   postgres-data:      
