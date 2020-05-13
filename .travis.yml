@@ -4,8 +4,8 @@ jdk:
 dist: trusty
 
 services:
-  - docker
-#  - postgresql
+#  - docker
+  - postgresql
 
 before_script:
 #  - cd ./docker/dev/
@@ -30,8 +30,8 @@ before_script:
 addons:
   sonarcloud:
     organization: "glescroel"
-    token:
-      secure: "**************************" # encrypted value of your token
+#    token:
+#      secure: "**************************" # encrypted value of your token
 
 script:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis

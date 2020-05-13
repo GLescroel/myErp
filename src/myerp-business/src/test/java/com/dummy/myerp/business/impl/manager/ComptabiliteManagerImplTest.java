@@ -1,28 +1,40 @@
 package com.dummy.myerp.business.impl.manager;
 
+import com.dummy.myerp.business.impl.AbstractBusinessManager;
+import com.dummy.myerp.business.impl.TransactionManager;
+import com.dummy.myerp.consumer.dao.contrat.ComptabiliteDao;
+import com.dummy.myerp.consumer.dao.contrat.DaoProxy;
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
+import com.dummy.myerp.model.bean.comptabilite.SequenceEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
+import com.dummy.myerp.technical.exception.NotFoundException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.validation.Validator;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
-import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 
-@RunWith(SpringRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(AbstractBusinessManager.class)
 @ContextConfiguration(locations = "/com/dummy/myerp/business/applicationContext.xml")
 public class ComptabiliteManagerImplTest {
 
@@ -33,13 +45,21 @@ public class ComptabiliteManagerImplTest {
     private static final String LIGNE_TEST_LIBELLE = "libelle-ligne-test";
     private static final String LIGNE_TEST_LIBELLE_NEW = "libelle-ligne-test-new";
 
-
+    @Mock
+    private DaoProxy daoProxy;
+    @Mock
+    private ComptabiliteDao comptabiliteDao;
+    @Mock
+    private TransactionManager transactionManager;
+    @Mock
+    private Validator validator;
+    @InjectMocks
     private ComptabiliteManagerImpl manager = new ComptabiliteManagerImpl();
+
     private EcritureComptable vEcritureComptable = new EcritureComptable();
 
-
     @Before
-    public void setup() {
+    public void setup() throws NotFoundException {
         vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         vEcritureComptable.setDate(new Date());
         vEcritureComptable.setLibelle(ECRITURE_TEST_LIBELLE);
@@ -50,36 +70,56 @@ public class ComptabiliteManagerImplTest {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(411),
                 LIGNE_TEST_LIBELLE, null,
                 new BigDecimal(123)));
+
+        PowerMockito.mockStatic(AbstractBusinessManager.class);
+        Mockito.when(AbstractBusinessManager.getDaoProxy()).thenReturn(daoProxy);
+        Mockito.when(daoProxy.getComptabiliteDao()).thenReturn(comptabiliteDao);
+        Mockito.when(AbstractBusinessManager.getTransactionManager()).thenReturn(transactionManager);
+        Mockito.when(AbstractBusinessManager.getConstraintValidator()).thenReturn(validator);
     }
 
     @Test
     public void testGetListCompteComptable() {
-        Assert.assertEquals(7, manager.getListCompteComptable().size());
+        ArrayList<CompteComptable> comptes = new ArrayList();
+        comptes.add(new CompteComptable(1, "compte test"));
+        Mockito.when(comptabiliteDao.getListCompteComptable()).thenReturn(comptes);
+        Assert.assertEquals(1, manager.getListCompteComptable().size());
+        Assert.assertEquals("compte test", manager.getListCompteComptable().get(0).getLibelle());
+        Assert.assertEquals(java.util.Optional.of(1).get(), manager.getListCompteComptable().get(0).getNumero());
     }
 
     @Test
     public void testGetListJournalComptable() {
-        Assert.assertEquals(4, manager.getListJournalComptable().size());
+        ArrayList<JournalComptable> journalComptables = new ArrayList();
+        journalComptables.add(new JournalComptable("OC", "journal test"));
+        Mockito.when(comptabiliteDao.getListJournalComptable()).thenReturn(journalComptables);
+        Assert.assertEquals(1, manager.getListJournalComptable().size());
+        Assert.assertEquals("journal test", manager.getListJournalComptable().get(0).getLibelle());
+        Assert.assertEquals("OC", manager.getListJournalComptable().get(0).getCode());
     }
 
     @Test
     public void testGetListEcritureComptable() {
-        Assert.assertEquals(5, manager.getListEcritureComptable().size());
+        ArrayList<EcritureComptable> ecritureComptables = new ArrayList();
+        ecritureComptables.add(new EcritureComptable());
+        Mockito.when(comptabiliteDao.getListEcritureComptable()).thenReturn(ecritureComptables);
+        Assert.assertEquals(1, manager.getListEcritureComptable().size());
     }
 
     @Test
-    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
-    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
-    public void testInsertEcritureComptable() throws FunctionalException {
+    public void testInsertEcritureComptable() throws FunctionalException, NotFoundException {
+        Mockito.when(comptabiliteDao.getEcritureComptableByRef(any())).thenThrow(NotFoundException.class);
         manager.insertEcritureComptable(vEcritureComptable);
-        Assert.assertNotNull(getEcritureComptableByRef(vEcritureComptable.getReference()));
+        Mockito.verify(comptabiliteDao).insertEcritureComptable(any());
     }
 
     @Test
-    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
-    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
-    public void testUpdateEcritureComptable() throws FunctionalException {
-        testInsertEcritureComptable();
+    public void testUpdateEcritureComptable() throws FunctionalException, NotFoundException {
+        Mockito.when(comptabiliteDao.getEcritureComptableByRef(any())).thenThrow(NotFoundException.class);
+        ArrayList<EcritureComptable> ecritureComptables = new ArrayList<>();
+        ecritureComptables.add(vEcritureComptable);
+        Mockito.when(manager.getListEcritureComptable()).thenReturn(ecritureComptables);
+
         EcritureComptable ecritureComptable = getEcritureComptableByRef(ECRITURE_TEST_REF);
         ecritureComptable.setReference(ECRITURE_TEST_REF_NEW);
         ecritureComptable.setLibelle(ECRITURE_TEST_LIBELLE_NEW);
@@ -100,28 +140,14 @@ public class ComptabiliteManagerImplTest {
         }
 
         manager.updateEcritureComptable(ecritureComptable);
+        Mockito.verify(comptabiliteDao).updateEcritureComptable(any());
 
-        Assert.assertNull(getEcritureComptableByRef(ECRITURE_TEST_REF));
-
-        EcritureComptable actualEcritureComptable = getEcritureComptableByRef(ECRITURE_TEST_REF_NEW);
-        Assert.assertNotNull(actualEcritureComptable);
-
-        for (LigneEcritureComptable ligne : actualEcritureComptable.getListLigneEcriture()) {
-            Assert.assertTrue(ligne.getLibelle().equalsIgnoreCase(LIGNE_TEST_LIBELLE_NEW));
-        }
     }
 
     @Test
-    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
-    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
     public void testDeleteEcritureComptable() throws FunctionalException {
-        testInsertEcritureComptable();
-        EcritureComptable ecritureComptable = getEcritureComptableByRef(ECRITURE_TEST_REF);
-        Assert.assertNotNull(ecritureComptable);
-
-        manager.deleteEcritureComptable(ecritureComptable.getId());
-
-        Assert.assertNull(getEcritureComptableByRef(ECRITURE_TEST_REF));
+        manager.deleteEcritureComptable(vEcritureComptable.getId());
+        Mockito.verify(comptabiliteDao).deleteEcritureComptable(any());
     }
 
     private EcritureComptable getEcritureComptableByRef(String reference) {
@@ -135,6 +161,7 @@ public class ComptabiliteManagerImplTest {
 
     @Test
     public void checkEcritureComptableUnit() throws Exception {
+        Mockito.when(comptabiliteDao.getEcritureComptableByRef(any())).thenThrow(NotFoundException.class);
         manager.checkEcritureComptable(vEcritureComptable);
     }
 
@@ -181,37 +208,36 @@ public class ComptabiliteManagerImplTest {
     }
 
     @Test(expected = FunctionalException.class)
-    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
-    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
     public void checkEcritureComptableContextRG6Violation() throws Exception {
-        testInsertEcritureComptable();
+        EcritureComptable olderEcritureComptable = vEcritureComptable;
+        olderEcritureComptable.setId(999);
+        Mockito.when(comptabiliteDao.getEcritureComptableByRef(any())).thenReturn(olderEcritureComptable);
+
         vEcritureComptable.setId(null);
         manager.checkEcritureComptableContext(vEcritureComptable);
     }
 
     @Test(expected = FunctionalException.class)
-    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
-    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
     public void checkEcritureComptableContextRG6ViolationWithId() throws Exception {
-        testInsertEcritureComptable();
+        EcritureComptable olderEcritureComptable = new EcritureComptable();
+        olderEcritureComptable.setId(998);
+        olderEcritureComptable.setReference(ECRITURE_TEST_REF);
+        Mockito.when(comptabiliteDao.getEcritureComptableByRef(any())).thenReturn(olderEcritureComptable);
         vEcritureComptable.setId(999);
         manager.checkEcritureComptableContext(vEcritureComptable);
     }
 
     @Test
-    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
-    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
     public void testAddReference() throws Exception {
+        Mockito.when(comptabiliteDao.getEcritureComptableByRef(any())).thenThrow(NotFoundException.class);
+        Mockito.when(comptabiliteDao.getSequenceEcritureComptable(any(), anyInt()))
+                .thenReturn(new SequenceEcritureComptable("OC", 2020, 40));
         vEcritureComptable.setReference(null);
-        vEcritureComptable.setDate(Date.from(Instant.parse("2016-12-31T18:35:24.00Z")));
+        vEcritureComptable.setJournal(new JournalComptable("OC", "journal test"));
+        vEcritureComptable.setDate(Date.from(Instant.parse("2020-12-31T18:35:24.00Z")));
         manager.addReference(vEcritureComptable);
         manager.checkEcritureComptable(vEcritureComptable);
-        Assert.assertEquals("AC-2016/00041", vEcritureComptable.getReference());
-        manager.insertEcritureComptable(vEcritureComptable);
-        Assert.assertNotNull(getEcritureComptableByRef("AC-2016/00041"));
-
-        manager.addReference(vEcritureComptable);
-        Assert.assertEquals("AC-2016/00042", vEcritureComptable.getReference());
+        Assert.assertEquals("OC-2020/00041", vEcritureComptable.getReference());
     }
 
 }
