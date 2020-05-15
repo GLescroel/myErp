@@ -116,12 +116,12 @@
     <!-- Profiles -->
     <!-- =============================================================== -->
     <profiles>
-        <!-- Profile utilisé pour lancer les tests d'intégration de la couche Consumer -->
+        <!-- Profile utilisé pour lancer les tests d'intégration de la couche Business -->
         <profile>
             <id>test-consumer</id>
             <build>
                 <plugins>
-                    <!-- Ajout du répertoire src/test-consumer/java en tant que source de test du module -->
+                    <!-- Ajout du répertoire src/test-business/java en tant que source de test du module -->
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>build-helper-maven-plugin</artifactId>
@@ -140,6 +140,15 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <includes>
+                                <include>**/*Test</include>
+                                <include>*Test*</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
                 </plugins>
                 <testResources>
                     <testResource>
@@ -152,7 +161,6 @@
             </build>
         </profile>
     </profiles>
-
 
     <!-- =============================================================== -->
     <!-- Build -->
@@ -187,7 +195,7 @@
                                 <rule>
                                     <limits>
                                         <limit>
-                                            <minimum>0.90</minimum>
+                                            <minimum>0.75</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
