@@ -1,5 +1,6 @@
-package com.dummy.myerp.consumer.dao.impl.db.dao;
+package com.dummy.myerp.consumer.testintegration;
 
+import com.dummy.myerp.consumer.dao.impl.db.dao.ComptabiliteDaoImpl;
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
@@ -21,8 +22,8 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TES
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration("classpath:applicationContext.xml")
-public class ComptabiliteDaoImplTest {
+@ContextConfiguration(locations = "/com/dummy/myerp/consumer/applicationContext.xml")
+public class ConsumerIntegrationTest {
 
     private static final String ECRITURE_TEST_REF = "ref-ecriture-test";
     private static final String ECRITURE_TEST_LIBELLE = "libelle-ecriture-test";
@@ -89,8 +90,8 @@ public class ComptabiliteDaoImplTest {
     }
 
     @Test
-    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
-    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
+    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/com.dummy.myerp.consumer.testintegration/sql/clean-database.sql")
+    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/com.dummy.myerp.consumer.testintegration/sql/clean-database.sql")
     public void insertEcritureComptable() throws NotFoundException {
         EcritureComptable ecritureComptable = new EcritureComptable();
         ecritureComptable.setReference(ECRITURE_TEST_REF);
@@ -107,8 +108,8 @@ public class ComptabiliteDaoImplTest {
     }
 
     @Test
-    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
-    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
+    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/com.dummy.myerp.consumer.testintegration/sql/clean-database.sql")
+    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/com.dummy.myerp.consumer.testintegration/sql/clean-database.sql")
     public void insertListLigneEcritureComptable() throws NotFoundException {
         EcritureComptable ecritureComptable = new EcritureComptable();
         ecritureComptable.setReference(ECRITURE_TEST_REF);
@@ -138,8 +139,8 @@ public class ComptabiliteDaoImplTest {
     }
 
     @Test
-    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
-    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
+    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/com.dummy.myerp.consumer.testintegration/sql/clean-database.sql")
+    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/com.dummy.myerp.consumer.testintegration/sql/clean-database.sql")
     public void updateEcritureComptable() throws NotFoundException {
         insertListLigneEcritureComptable();
         EcritureComptable ecritureComptable = comptabiliteDao.getEcritureComptableByRef(ECRITURE_TEST_REF);
@@ -171,8 +172,8 @@ public class ComptabiliteDaoImplTest {
     }
 
     @Test
-    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
-    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
+    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/com.dummy.myerp.consumer.testintegration/sql/clean-database.sql")
+    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/com.dummy.myerp.consumer.testintegration/sql/clean-database.sql")
     public void deleteEcritureComptable() throws NotFoundException {
         insertEcritureComptable();
         comptabiliteDao.deleteEcritureComptable(comptabiliteDao.getEcritureComptableByRef(ECRITURE_TEST_REF).getId());
@@ -187,8 +188,8 @@ public class ComptabiliteDaoImplTest {
     }
 
     @Test
-    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
-    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
+    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/com.dummy.myerp.consumer.testintegration/sql/clean-database.sql")
+    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/com.dummy.myerp.consumer.testintegration/sql/clean-database.sql")
     public void deleteListLigneEcritureComptable() throws NotFoundException {
         insertListLigneEcritureComptable();
         comptabiliteDao.deleteListLigneEcritureComptable(comptabiliteDao.getEcritureComptableByRef(ECRITURE_TEST_REF).getId());
@@ -213,8 +214,8 @@ public class ComptabiliteDaoImplTest {
     }
 
     @Test
-    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
-    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
+    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/com.dummy.myerp.consumer.testintegration/sql/clean-database.sql")
+    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/com.dummy.myerp.consumer.testintegration/sql/clean-database.sql")
     public void testSetSequenceComptable() throws NotFoundException {
         comptabiliteDao.setSequenceEcritureComptable("AC", 2016, 99);
         Assert.assertEquals(java.util.Optional.of(99).get(), comptabiliteDao.getSequenceEcritureComptable("AC", 2016).getDerniereValeur());
