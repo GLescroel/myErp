@@ -1,4 +1,4 @@
-package com.dummy.myerp.testbusiness.business;
+package com.dummy.business.testintegration;
 
 import com.dummy.myerp.business.impl.manager.ComptabiliteManagerImpl;
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
@@ -6,6 +6,7 @@ import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
+import com.dummy.myerp.technical.exception.NotFoundException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,16 +74,16 @@ public class BusinessTest {
     }
 
     @Test
-    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
-    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
+    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/com.dummy.business.testintegration/sql/clean-database.sql")
+    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/com.dummy.business.testintegration/sql/clean-database.sql")
     public void testInsertEcritureComptable() throws FunctionalException {
         manager.insertEcritureComptable(vEcritureComptable);
         Assert.assertNotNull(getEcritureComptableByRef(vEcritureComptable.getReference()));
     }
 
     @Test
-    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
-    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
+    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/com.dummy.business.testintegration/sql/clean-database.sql")
+    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/com.dummy.business.testintegration/sql/clean-database.sql")
     public void testUpdateEcritureComptable() throws FunctionalException {
         testInsertEcritureComptable();
         EcritureComptable ecritureComptable = getEcritureComptableByRef(ECRITURE_TEST_REF);
@@ -117,8 +118,8 @@ public class BusinessTest {
     }
 
     @Test
-    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
-    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
+    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/com.dummy.business.testintegration/sql/clean-database.sql")
+    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/com.dummy.business.testintegration/sql/clean-database.sql")
     public void testDeleteEcritureComptable() throws FunctionalException {
         testInsertEcritureComptable();
         EcritureComptable ecritureComptable = getEcritureComptableByRef(ECRITURE_TEST_REF);
@@ -139,14 +140,14 @@ public class BusinessTest {
     }
 
     @Test
-    public void checkEcritureComptable() throws Exception {
+    public void checkEcritureComptable() throws FunctionalException {
         manager.checkEcritureComptable(vEcritureComptable);
     }
 
     @Test
-    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
-    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/sql/clean-database.sql")
-    public void testAddReference() throws Exception {
+    @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = "classpath:/com.dummy.business.testintegration/sql/clean-database.sql")
+    @Sql(executionPhase = AFTER_TEST_METHOD, scripts = "classpath:/com.dummy.business.testintegration/sql/clean-database.sql")
+    public void testAddReference() throws NotFoundException, FunctionalException {
         vEcritureComptable.setReference(null);
         vEcritureComptable.setDate(Date.from(Instant.parse("2016-12-31T18:35:24.00Z")));
         manager.addReference(vEcritureComptable);

@@ -145,7 +145,7 @@
                                 </goals>
                                 <configuration>
                                     <sources>
-                                        <source>src/test-business/java</source>
+                                        <source>src/test-integration-business/java</source>
                                     </sources>
                                 </configuration>
                             </execution>
@@ -157,7 +157,7 @@
                         <directory>src/test/resources</directory>
                     </testResource>
                     <testResource>
-                        <directory>src/test-business/resources</directory>
+                        <directory>src/test-integration-business/resources</directory>
                     </testResource>
                 </testResources>
             </build>
