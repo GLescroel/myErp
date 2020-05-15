@@ -122,7 +122,6 @@
         </dependency>
     </dependencies>
 
-
     <!-- =============================================================== -->
     <!-- Profiles -->
     <!-- =============================================================== -->
@@ -145,11 +144,20 @@
                                 </goals>
                                 <configuration>
                                     <sources>
-                                        <source>src/test-integration-business/java</source>
+                                        <source>src/test-business/java</source>
                                     </sources>
                                 </configuration>
                             </execution>
                         </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <includes>
+                                <include>**/*Test</include>
+                                <include>*Test*</include>
+                            </includes>
+                        </configuration>
                     </plugin>
                 </plugins>
                 <testResources>
@@ -157,17 +165,13 @@
                         <directory>src/test/resources</directory>
                     </testResource>
                     <testResource>
-                        <directory>src/test-integration-business/resources</directory>
+                        <directory>src/test-business/resources</directory>
                     </testResource>
                 </testResources>
             </build>
         </profile>
     </profiles>
 
-
-    <!-- =============================================================== -->
-    <!-- Build -->
-    <!-- =============================================================== -->
     <!-- =============================================================== -->
     <!-- Build -->
     <!-- =============================================================== -->
@@ -201,7 +205,7 @@
                                 <rule>
                                     <limits>
                                         <limit>
-                                            <minimum>0.7</minimum>
+                                            <minimum>0.75</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
