@@ -11,7 +11,14 @@ import java.util.Date;
 /**
  * Classe utilitaire travaillant sur les ResultSet
  */
-public interface ResultSetHelper {
+public abstract class ResultSetHelper {
+
+    /**
+     * Constructeur privé
+     */
+    private ResultSetHelper() {
+        //private constructor
+    }
 
     // ==================== Méthodes ====================
     /**
