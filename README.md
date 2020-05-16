@@ -1,4 +1,6 @@
 # MyERP
+https://travis-ci.org/GLescroel/myErp.svg?branch=master&status=started
+https://sonarcloud.io/dashboard?id=GLescroel_myErp
 
 ## Organisation du répertoire
 
@@ -38,3 +40,12 @@ Il comporte :
     docker-compose stop
     docker-compose rm -v
     docker-compose up
+
+
+### Lancement des tests incluant les tests d'intégration
+    à partir de la racine src: mvn clean 
+    org.jacoco:jacoco-maven-plugin:prepare-agent install -Ptest-business,test-consumer
+
+### Génération du site Maven
+    à partir de la racine src : 
+    mvn package site site:stage
