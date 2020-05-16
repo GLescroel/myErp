@@ -4,28 +4,23 @@ jdk:
 dist: trusty
 
 services:
-#  - docker
-  - postgresql
+  - docker
+#  - postgresql
 
 before_script:
-#  - cd ./docker/dev/
-#  - docker-compose up -d
-#  - docker-compose ps
-#  - cd ../../src
+  - cd ./docker/dev/
+  - docker-compose up -d
+  - docker-compose ps
+  - cd ../../src
 
-  - psql -c 'create database myerp;' -U postgres
-  - psql -c "create user myerp_user with password 'myerp';" -U postgres
-  - psql -c 'grant all privileges on database myerp to myerp_user;' -U postgres
-  - cd ./docker/dev/init/db/docker-entrypoint-initdb.d/
-  - psql myerp -U myerp_user -f ./01_create_schema.sql
-  - psql myerp -U myerp_user -f ./02_create_tables.sql
-  - psql myerp -U myerp_user -f ./21_insert_data_demo.sql
-#  - psql -c 'GRANT USAGE ON SCHEMA myerp TO myerp_user;' -U postgres
-#  - psql -c 'GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA myerp to myerp_user;' -U postgres
-#  - psql -c 'GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA myerp TO myerp_user;' -U postgres
-#  - psql -c '\dn;' -U postgres#  
-  - cd ../../../../../src
-#  - cd ../../src
+#  - psql -c 'create database myerp;' -U postgres
+#  - psql -c "create user myerp_user with password 'myerp';" -U postgres
+#  - psql -c 'grant all privileges on database myerp to myerp_user;' -U postgres
+#  - cd ./docker/dev/init/db/docker-entrypoint-initdb.d/
+#  - psql myerp -U myerp_user -f ./01_create_schema.sql
+#  - psql myerp -U myerp_user -f ./02_create_tables.sql
+#  - psql myerp -U myerp_user -f ./21_insert_data_demo.sql
+#  - cd ../../../../../src
 
 addons:
   sonarcloud:
