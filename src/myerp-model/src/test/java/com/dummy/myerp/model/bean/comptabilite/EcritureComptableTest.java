@@ -52,7 +52,7 @@ public class EcritureComptableTest {
         vEcriture.getListLigneEcriture().add(this.createLigne(1, "100.50", "33"));
         vEcriture.getListLigneEcriture().add(this.createLigne(2, null, "301"));
         vEcriture.getListLigneEcriture().add(this.createLigne(2, "40", "7"));
-        Assert.assertEquals("341.00", String.valueOf(vEcriture.getTotalDebit()));
+        Assert.assertTrue(vEcriture.getTotalDebit().compareTo(BigDecimal.valueOf(341)) == 0);
     }
 
     @Test
@@ -65,7 +65,7 @@ public class EcritureComptableTest {
         vEcriture.getListLigneEcriture().add(this.createLigne(1, "100.50", "33"));
         vEcriture.getListLigneEcriture().add(this.createLigne(2, null, "301"));
         vEcriture.getListLigneEcriture().add(this.createLigne(2, "40", "7"));
-        Assert.assertEquals("341.00", String.valueOf(vEcriture.getTotalCredit()));
+        Assert.assertTrue(vEcriture.getTotalCredit().compareTo(BigDecimal.valueOf(341)) == 0);
     }
 
     @Test
@@ -104,8 +104,8 @@ public class EcritureComptableTest {
                 ecritureComptable.getReference(),
                 ecritureComptable.getDate(),
                 ecritureComptable.getLibelle(),
-                new DecimalFormat("#0.00").format(ecritureComptable.getTotalDebit()).replace(",", "."),
-                new DecimalFormat("#0.00").format(ecritureComptable.getTotalCredit()).replace(",", "."),
+                ecritureComptable.getTotalDebit(),
+                ecritureComptable.getTotalCredit(),
                 StringUtils.join(ecritureComptable.getListLigneEcriture(), "\n"));
 
         Assert.assertEquals(expectedString, ecritureComptable.toString());

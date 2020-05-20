@@ -141,6 +141,11 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
             throw new FunctionalException(
                     "RG5 non respectée : La référence de l'écriture comptable ne contient pas l'année d'écriture.");
         }
+        if (!checkRG7(pEcritureComptable)) {
+            throw new FunctionalException(
+                    "RG7 non respectée : Une ligne d'écriture comptable contient un débit ou un crédit de plus de 2 " +
+                            "décimales.");
+        }
     }
 
     /**
@@ -204,6 +209,24 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         return pEcritureComptable.isEquilibree();
     }
 
+    /**
+     * Vérifie que les débits et crédits de l'Ecriture comptable respectent bien RG7
+     *
+     * @param pEcritureComptable -
+     * @return boolean
+     */
+    boolean checkRG7(EcritureComptable pEcritureComptable) {
+        boolean vIsValid = true;
+        for (LigneEcritureComptable vLigne : pEcritureComptable.getListLigneEcriture()) {
+            if (vLigne.getCredit() != null && vLigne.getCredit().scale() > 2) {
+                vIsValid = false;
+            }
+            if (vLigne.getDebit() != null && vLigne.getDebit().scale() > 2) {
+                vIsValid = false;
+            }
+        }
+        return vIsValid;
+    }
 
     /**
      * Vérifie que l'Ecriture comptable respecte les règles de gestion liées au contexte

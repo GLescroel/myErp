@@ -41,8 +41,8 @@ Il comporte :
 
 
 ### Lancement des tests incluant les tests d'intégration
-    à partir de la racine src: mvn clean 
-    org.jacoco:jacoco-maven-plugin:prepare-agent install -Ptest-business,test-consumer
+    à partir de la racine src: 
+    mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -Ptest-business,test-consumer
 
 ### Génération du site Maven
     à partir de la racine src : 

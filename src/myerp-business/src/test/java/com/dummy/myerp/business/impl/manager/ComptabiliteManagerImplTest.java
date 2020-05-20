@@ -59,7 +59,7 @@ public class ComptabiliteManagerImplTest {
     private EcritureComptable vEcritureComptable = new EcritureComptable();
 
     @Before
-    public void setup() throws NotFoundException {
+    public void setup() {
         vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         vEcritureComptable.setDate(new Date());
         vEcritureComptable.setLibelle(ECRITURE_TEST_LIBELLE);
@@ -145,7 +145,7 @@ public class ComptabiliteManagerImplTest {
     }
 
     @Test
-    public void testDeleteEcritureComptable() throws FunctionalException {
+    public void testDeleteEcritureComptable() {
         manager.deleteEcritureComptable(vEcritureComptable.getId());
         Mockito.verify(comptabiliteDao).deleteEcritureComptable(any());
     }
@@ -198,6 +198,18 @@ public class ComptabiliteManagerImplTest {
     @Test(expected = FunctionalException.class)
     public void checkEcritureComptableUnitRG5Journal() throws Exception {
         vEcritureComptable.setReference("BQ-2020/00001");
+        manager.checkEcritureComptableUnit(vEcritureComptable);
+    }
+
+    @Test(expected = FunctionalException.class)
+    public void checkEcritureComptableUnitRG7() throws Exception {
+        vEcritureComptable.getListLigneEcriture().clear();
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(String.valueOf(123.123)),
+                null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, null,
+                new BigDecimal(String.valueOf(123.123))));
         manager.checkEcritureComptableUnit(vEcritureComptable);
     }
 
