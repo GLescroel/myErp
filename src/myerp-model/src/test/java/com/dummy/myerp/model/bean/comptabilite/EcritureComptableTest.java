@@ -52,7 +52,7 @@ public class EcritureComptableTest {
         vEcriture.getListLigneEcriture().add(this.createLigne(1, "100.50", "33"));
         vEcriture.getListLigneEcriture().add(this.createLigne(2, null, "301"));
         vEcriture.getListLigneEcriture().add(this.createLigne(2, "40", "7"));
-        Assert.assertTrue(vEcriture.getTotalDebit().compareTo(BigDecimal.valueOf(341)) == 0);
+        Assert.assertEquals(new BigDecimal(String.valueOf(341.00)).setScale(2), vEcriture.getTotalDebit().setScale(2));
     }
 
     @Test
@@ -65,7 +65,7 @@ public class EcritureComptableTest {
         vEcriture.getListLigneEcriture().add(this.createLigne(1, "100.50", "33"));
         vEcriture.getListLigneEcriture().add(this.createLigne(2, null, "301"));
         vEcriture.getListLigneEcriture().add(this.createLigne(2, "40", "7"));
-        Assert.assertTrue(vEcriture.getTotalCredit().compareTo(BigDecimal.valueOf(341)) == 0);
+        Assert.assertEquals(new BigDecimal(String.valueOf(341.00)).setScale(2), vEcriture.getTotalCredit().setScale(2));
     }
 
     @Test
